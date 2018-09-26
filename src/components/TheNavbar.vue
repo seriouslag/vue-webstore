@@ -1,20 +1,3 @@
-<script lang="ts">
-import { Component, Emit, Vue } from 'vue-property-decorator';
-import TheHeaderSearch from './TheHeaderSearch.vue';
-
-@Component({
-    components: { TheHeaderSearch },
-})
-export default class TheNavbar extends Vue {
-    drawer: boolean = false;
-
-    @Emit('drawerChanged')
-    private drawerToggled(): void {
-        this.drawer = !this.drawer;
-    }
-}
-</script>
-
 <template>
     <div>
         <v-toolbar flat fixed app>
@@ -30,23 +13,81 @@ export default class TheNavbar extends Vue {
                 app
         >
             <v-list dense>
-                <v-list-tile @click="">
-                    <v-list-tile-action>
-                        <v-icon>home</v-icon>
-                    </v-list-tile-action>
-                    <v-list-tile-content>
-                        <v-list-tile-title>Home</v-list-tile-title>
-                    </v-list-tile-content>
+                <v-list-tile>
+                    <router-link class="icon-router-link" to="/">
+                        <v-btn flat large text-transform-none class="text-transform-none">
+                            <v-list-tile-action>
+                                <v-icon>home</v-icon>
+                            </v-list-tile-action>
+                            <v-list-tile-content>
+                                <v-list-tile-title>
+                                    Home
+                                </v-list-tile-title>
+                            </v-list-tile-content>
+                        </v-btn>
+                    </router-link>
                 </v-list-tile>
-                <v-list-tile @click="">
-                    <v-list-tile-action>
-                        <v-icon>contact_mail</v-icon>
-                    </v-list-tile-action>
-                    <v-list-tile-content>
-                        <v-list-tile-title>Contact</v-list-tile-title>
-                    </v-list-tile-content>
+                <v-list-tile>
+                    <router-link class="icon-router-link" to="/about">
+                        <v-btn flat large text-transform-none class="text-transform-none">
+                            <v-list-tile-action>
+                                <v-icon>whatshot</v-icon>
+                            </v-list-tile-action>
+                            <v-list-tile-content>
+                                <v-list-tile-title>
+                                    About
+                                </v-list-tile-title>
+                            </v-list-tile-content>
+                        </v-btn>
+                    </router-link>
+                </v-list-tile>
+                <v-list-tile>
+                    <router-link class="icon-router-link" to="/contact">
+                        <v-btn flat large text-transform-none class="text-transform-none">
+                            <v-list-tile-action>
+                                <v-icon>contact_mail</v-icon>
+                            </v-list-tile-action>
+                            <v-list-tile-content>
+                                <v-list-tile-title>
+                                    Contact
+                                </v-list-tile-title>
+                            </v-list-tile-content>
+                        </v-btn>
+                    </router-link>
                 </v-list-tile>
             </v-list>
         </v-navigation-drawer>
     </div>
 </template>
+
+<script lang="ts">
+  import {Component, Emit, Vue} from 'vue-property-decorator';
+  import TheHeaderSearch from './TheHeaderSearch.vue';
+
+  @Component({
+  components: { TheHeaderSearch },
+})
+export default class TheNavbar extends Vue {
+  drawer: boolean = false;
+
+  @Emit('drawerChanged')
+  private drawerToggled(): void {
+    this.drawer = !this.drawer;
+  }
+}
+</script>
+
+<style lang="scss" scoped>
+    @import '../styles/colors';
+
+    .icon-router-link {
+        display: flex;
+        flex-direction: row;
+        text-decoration: none;
+        color: $linkColor;
+
+        button {
+            text-transform: none;
+        }
+    }
+</style>

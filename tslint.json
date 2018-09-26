@@ -2,11 +2,12 @@
   "extends": "tslint-config-airbnb",
   "rules": {
     "only-arrow-functions": true,
-    "no-unused-variable": true,
     "arrow-return-shorthand": true,
     "import-name": false,
-    "trailing-comma": false,
-    "indent": [true, "spaces", 4],
-    "cyclomatic-complexity": [true, 10]
+    "trailing-comma": true,
+    "indent": [true, "spaces", 2],
+    "cyclomatic-complexity": [true, 10],
+    "no-unused-variable": false,
+    "object-curly-spacing": [false, "always", {"arraysInObjects": false, "objectsInObjects": false}]
   }
 }

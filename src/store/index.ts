@@ -7,6 +7,7 @@ export default new Vuex.Store({
   state: {
     dataSource: {
       products: {
+
       }
     }
   },
@@ -14,6 +15,8 @@ export default new Vuex.Store({
 
   },
   actions: {
-
-  }
+  },
+  getters: {
+    dataSource: state => state.dataSource,
+  },
 });
