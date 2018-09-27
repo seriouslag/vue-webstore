@@ -1,7 +1,7 @@
 <template>
     <v-card
         width="300px">
-        <router-link :to="`/product/${product.productId}`">
+        <router-link :to="`/product/${product.id}`">
             <v-img
                     :src="imageSrc"
                     aspect-ratio="2.75"
@@ -11,13 +11,13 @@
 
         <v-card-title primary-title>
             <div>
-                <h3 class="headline mb-0">{{product.productName}}</h3>
-                <div>{{product.productDescription}}</div>
+                <h3 class="headline mb-0">{{product.name}}</h3>
+                <div>{{product.description}}</div>
             </div>
         </v-card-title>
 
         <v-card-actions>
-            <v-btn flat color="orange">Add to cart</v-btn>
+            <v-btn flat color="orange">Explore</v-btn>
             <v-spacer />
             <v-btn icon>
                 <v-icon>favorite</v-icon>
@@ -34,9 +34,9 @@
 
 <script lang="ts">
   import {Component, Prop, Vue} from 'vue-property-decorator';
-  import Product from '../models/Product';
   import ProductOption from '../models/ProductOption';
   import ProductOptionImage from '../models/ProductOptionImage';
+  import Product from '../models/Product';
 
   const failedImageLocation = 'https://www.chiefsretro.com/assets/imageError.jpg';
 
@@ -50,12 +50,12 @@
 
     private get imageSrc(): string {
       let url = '';
-      this.product.productOptions.forEach((productOptions: ProductOption) => {
+      this.product.options.forEach((option: ProductOption) => {
         if (url) return;
-        productOptions.productOptionImages.forEach((productOptionImage: ProductOptionImage) => {
+        option.images.forEach((image: ProductOptionImage) => {
           if (url) return;
-          if (productOptionImage.productOptionImageLocation) {
-            url = productOptionImage.productOptionImageLocation;
+          if (image.location) {
+            url = image.location;
             return;
           }
         });

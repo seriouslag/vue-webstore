@@ -14,7 +14,7 @@ export default class Api implements IApi {
       );
   }
 
-  getProductByProductId(id: number): Promise<Product> {
+  getProductById(id: number): Promise<Product> {
     return Fetch.get<Product>(`${apiUrl}/${productUrl}/${id}`, {});
   }
 

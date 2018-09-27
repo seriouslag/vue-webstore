@@ -5,6 +5,8 @@
             <v-toolbar-title>Store</v-toolbar-title>
             <v-spacer />
             <TheHeaderSearch />
+
+            <ShoppingCartIcon />
         </v-toolbar>
         <v-navigation-drawer
                 v-model="drawer"
@@ -63,18 +65,22 @@
 <script lang="ts">
   import {Component, Emit, Vue} from 'vue-property-decorator';
   import TheHeaderSearch from './TheHeaderSearch.vue';
+  import ShoppingCartIcon from './ShoppingCartIcon.vue';
 
   @Component({
-  components: { TheHeaderSearch },
-})
-export default class TheNavbar extends Vue {
-  drawer: boolean = false;
+    components: {
+      TheHeaderSearch,
+      ShoppingCartIcon,
+    },
+  })
+  export default class TheNavbar extends Vue {
+    drawer: boolean = false;
 
-  @Emit('drawerChanged')
-  private drawerToggled(): void {
-    this.drawer = !this.drawer;
+    @Emit('drawerChanged')
+    private drawerToggled(): void {
+      this.drawer = !this.drawer;
+    }
   }
-}
 </script>
 
 <style lang="scss" scoped>

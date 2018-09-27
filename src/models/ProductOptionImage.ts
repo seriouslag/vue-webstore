@@ -1,6 +1,6 @@
 export default interface ProductOptionImage {
-  productOptionImageId: number;
-  productOptionImageLocation: string;
+  id: number;
+  location: string;
   hasThumb: boolean;
-  productOptionImageOrder: number;
+  order: number;
 }

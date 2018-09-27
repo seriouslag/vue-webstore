@@ -1,9 +1,9 @@
 import ProductOptionImage from '@/models/ProductOptionImage';
 
 export default interface ProductOption {
-  productOptionsId: number;
-  productType: string;
-  productPrice: number;
-  productQuantity: number;
-  productOptionImages: ProductOptionImage[];
+  id: number;
+  type: string;
+  price: number;
+  quantity: number;
+  images: ProductOptionImage[];
 }

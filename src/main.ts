@@ -10,6 +10,7 @@ import firebaseConfig from './firebase';
 import '@mdi/font/css/materialdesignicons.css';
 import IApi from '@/api/IApi';
 import Api from '@/api/api';
+import './filters';
 
 const api: IApi = new Api();
 

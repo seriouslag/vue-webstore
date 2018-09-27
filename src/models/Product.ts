@@ -1,8 +1,8 @@
 import ProductOption from '@/models/ProductOption';
 
 export default interface Product {
-  productId: number;
-  productName: string;
-  productDescription: string;
-  productOptions: ProductOption[];
+  id: number;
+  name: string;
+  description: string;
+  options: ProductOption[];
 }

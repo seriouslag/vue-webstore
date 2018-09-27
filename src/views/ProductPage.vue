@@ -8,7 +8,7 @@
         <div
             v-else-if="!isLoading"
         >
-            <h1>{{product.productName}}</h1>
+            <h1>{{product.name}}</h1>
             <v-flex>
                 <v-carousel
                         v-if="selectedProductOptionImage && listOfImages.length > 1"
@@ -35,7 +35,7 @@
                         column
                         align-content-center
                 >
-                    <p>{{product.productDescription}}</p>
+                    <p>{{product.description}}</p>
                     <v-flex
                             xs12 sm6 d-flex
                             v-if="productOptionsDropdown">
@@ -44,8 +44,10 @@
                                 v-model="selectedProductOptionNumber"
                                 :items="productOptionsDropdown"
                                 :label="productOptionsDropdown[0].text"
-                        ></v-select>
+                        />
+                        <span>Price: {{selectedProductOption.price | toCurrency}}</span>
                     </v-flex>
+                    <v-btn @click="addToCart()">Add to cart</v-btn>
                     <v-rating
                              half-increments
                              v-model="rating"
@@ -93,7 +95,7 @@
     private async getProductByRouteParams(): Promise<void> {
       this.isLoading = true;
       try {
-        this.product = await this.$api.getProductByProductId(parseInt(this.$route.params['id'], 10));
+        this.product = await this.$api.getProductById(parseInt(this.$route.params['id'], 10));
         this.isLoading = false;
         if (this.product === null) {
           this.isFailed = true;
@@ -105,32 +107,37 @@
       }
     }
 
+    private addToCart() {
+      this.$store.dispatch('addItemToCart',
+                           {productOption: this.selectedProductOption, quantity: 1});
+    }
+
     private get selectedProductOption(): ProductOption | null {
-      if (this.isLoading || !this.product || !this.product.productOptions.length) {
+      if (this.isLoading || !this.product || !this.product.options.length) {
         return null;
       }
-      return this.product.productOptions[this.selectedProductOptionNumber];
+      return this.product.options[this.selectedProductOptionNumber];
 
     }
 
     private get selectedProductOptionImage(): ProductOptionImage | null {
       if (this.isLoading || !this.selectedProductOption ||
-          !this.selectedProductOption.productOptionImages.length) {
+          !this.selectedProductOption.images.length) {
         return null;
       }
-      return this.selectedProductOption.productOptionImages[this.selectedProductOptionImageNumber];
+      return this.selectedProductOption.images[this.selectedProductOptionImageNumber];
     }
 
     private get listOfImages(): string[] {
       if (!this.selectedProductOption ||
-        this.selectedProductOption.productOptionImages.length === 0)  {
+        this.selectedProductOption.images.length === 0)  {
         return [failedImageLocation];
       }
       const listOfImages: string[] = [];
-      this.selectedProductOption.productOptionImages.forEach(
-        (productOptionImage: ProductOptionImage) => {
-          if (productOptionImage.productOptionImageLocation) {
-            listOfImages.push(productOptionImage.productOptionImageLocation);
+      this.selectedProductOption.images.forEach(
+        (image: ProductOptionImage) => {
+          if (image.location) {
+            listOfImages.push(image.location);
           }
         });
       return listOfImages.length ? listOfImages : [failedImageLocation];
@@ -142,8 +149,8 @@
       }
       const obj: { text: string, value: number }[] = [];
 
-      this.product.productOptions.forEach((productOption, index) => {
-        obj.push({ text: productOption.productType, value: index });
+      this.product.options.forEach((option, index) => {
+        obj.push({ text: option.type, value: index });
       });
       return obj;
     }

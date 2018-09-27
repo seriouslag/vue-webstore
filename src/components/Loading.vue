@@ -1,7 +1,6 @@
 <template>
     <div
             class="ma-auto"
-            v-else
     >
         <v-progress-circular
                 indeterminate

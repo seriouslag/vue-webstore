@@ -16,6 +16,7 @@ export default abstract class Fetch {
     return axios.request<T>({ url, method, headers: config.headers, data: config.data })
       .then(this.checkResponseStatus)
       .then((response: AxiosResponse<T>) => {
+        this.retry = 0;
         return response.data;
       })
       .catch((error: Error) => {
