@@ -1,5 +1,5 @@
 <template>
-    <v-btn flat icon >
+    <v-btn flat icon @click="$router.push({name: 'cart'})">
         <v-badge :value="itemCount > 0">
             <span slot="badge">{{itemCount}}</span>
             <v-icon>shopping_cart</v-icon>

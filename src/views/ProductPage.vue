@@ -6,7 +6,7 @@
     >
         <div v-if="isFailed">Failed to find this product.</div>
         <div
-            v-else-if="!isLoading"
+                v-else-if="!isLoading"
         >
             <h1>{{product.name}}</h1>
             <v-flex>
@@ -17,9 +17,9 @@
                         :style="{ height: imageHeight, width: imageWidth }"
                 >
                     <v-carousel-item
-                                     v-for="(image, i) in listOfImages"
-                                     :key="i"
-                                     :src="image"
+                            v-for="(image, i) in listOfImages"
+                            :key="i"
+                            :src="image"
                     />
                 </v-carousel>
                 <v-flex
@@ -49,9 +49,9 @@
                     </v-flex>
                     <v-btn @click="addToCart()">Add to cart</v-btn>
                     <v-rating
-                             half-increments
-                             v-model="rating"
-                             readonly
+                            half-increments
+                            v-model="rating"
+                            readonly
                     />
                     <div>0 reviews</div>
                 </v-container>
@@ -67,6 +67,7 @@
   import ProductOptionImage from '../models/ProductOptionImage';
   import Product from '../models/Product';
   import Loading from '../components/Loading.vue';
+  import CartItem from '../models/CartItem';
 
   const failedImageLocation = 'https://www.chiefsretro.com/assets/imageError.jpg';
 
@@ -107,9 +108,13 @@
       }
     }
 
-    private addToCart() {
-      this.$store.dispatch('addItemToCart',
-                           {productOption: this.selectedProductOption, quantity: 1});
+    private async addToCart() {
+      await this.$store.dispatch('addItemToCart', {
+        productOption: this.selectedProductOption,
+        quantity: 1,
+        productId: this.product.id,
+        productName: this.product.name,
+      } as CartItem);
     }
 
     private get selectedProductOption(): ProductOption | null {
@@ -122,7 +127,7 @@
 
     private get selectedProductOptionImage(): ProductOptionImage | null {
       if (this.isLoading || !this.selectedProductOption ||
-          !this.selectedProductOption.images.length) {
+        !this.selectedProductOption.images.length) {
         return null;
       }
       return this.selectedProductOption.images[this.selectedProductOptionImageNumber];

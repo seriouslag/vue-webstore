@@ -17,7 +17,7 @@
         </v-card-title>
 
         <v-card-actions>
-            <v-btn flat color="orange">Explore</v-btn>
+            <router-link :to="{ name: `product/${product.id}`, params: { product: product } }"><v-btn flat color="orange">Explore</v-btn></router-link>
             <v-spacer />
             <v-btn icon>
                 <v-icon>favorite</v-icon>

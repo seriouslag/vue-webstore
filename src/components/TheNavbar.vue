@@ -17,7 +17,7 @@
             <v-list dense>
                 <v-list-tile>
                     <router-link class="icon-router-link" to="/">
-                        <v-btn flat large text-transform-none class="text-transform-none">
+                        <v-btn flat large>
                             <v-list-tile-action>
                                 <v-icon>home</v-icon>
                             </v-list-tile-action>
@@ -31,7 +31,7 @@
                 </v-list-tile>
                 <v-list-tile>
                     <router-link class="icon-router-link" to="/about">
-                        <v-btn flat large text-transform-none class="text-transform-none">
+                        <v-btn flat large>
                             <v-list-tile-action>
                                 <v-icon>whatshot</v-icon>
                             </v-list-tile-action>
@@ -45,7 +45,7 @@
                 </v-list-tile>
                 <v-list-tile>
                     <router-link class="icon-router-link" to="/contact">
-                        <v-btn flat large text-transform-none class="text-transform-none">
+                        <v-btn flat large>
                             <v-list-tile-action>
                                 <v-icon>contact_mail</v-icon>
                             </v-list-tile-action>
@@ -57,6 +57,18 @@
                         </v-btn>
                     </router-link>
                 </v-list-tile>
+                <v-list-tile v-if="user === null">
+                    <SigninButton provider="google" btnText="Google" />
+                </v-list-tile>
+                <v-list-tile v-else>
+                    <v-btn flat large @click="signOut">
+                        <v-list-tile-content>
+                            <v-list-tile-title>
+                                Sign out
+                            </v-list-tile-title>
+                        </v-list-tile-content>
+                    </v-btn>
+                </v-list-tile>
             </v-list>
         </v-navigation-drawer>
     </div>
@@ -66,9 +78,12 @@
   import {Component, Emit, Vue} from 'vue-property-decorator';
   import TheHeaderSearch from './TheHeaderSearch.vue';
   import ShoppingCartIcon from './ShoppingCartIcon.vue';
+  import SigninButton from './SigninButton.vue';
+  import * as firebase from 'firebase';
 
   @Component({
     components: {
+      SigninButton,
       TheHeaderSearch,
       ShoppingCartIcon,
     },
@@ -79,6 +94,15 @@
     @Emit('drawerChanged')
     private drawerToggled(): void {
       this.drawer = !this.drawer;
+    }
+
+    private get user(): firebase.User | null {
+      return this.$store.getters.user;
+    }
+
+    private async signOut(): Promise<void> {
+      const b = await this.$api.signOut();
+      console.log();
     }
   }
 </script>
@@ -95,5 +119,9 @@
         button {
             text-transform: none;
         }
+    }
+
+    .v-btn {
+        text-transform: none !important;
     }
 </style>

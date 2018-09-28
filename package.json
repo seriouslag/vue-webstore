@@ -21,6 +21,7 @@
     "@babel/core": "^7.1.0",
     "@babel/polyfill": "^7.0.0",
     "@mdi/font": "^2.8.94",
+    "@types/firebase": "^3.2.1",
     "@types/node": "^10.11.0",
     "@vue/cli-plugin-babel": "^3.0.4",
     "@vue/cli-plugin-pwa": "^3.0.4",
