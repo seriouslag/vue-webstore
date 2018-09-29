@@ -68,6 +68,9 @@
 
     @Watch('selectedItem', { immediate: false, deep: true })
     private goTo(value: string): void {
+      if (!value) {
+        return;
+      }
       this.$router.push({ name: 'product', params: { id: value } });
     }
 

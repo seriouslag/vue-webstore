@@ -1,7 +1,7 @@
 <template>
     <v-card
         width="300px">
-        <router-link :to="`/product/${product.id}`">
+        <router-link :to="{name: 'product', params: { id: product.id }}">
             <v-img
                     :src="imageSrc"
                     aspect-ratio="2.75"
@@ -17,7 +17,9 @@
         </v-card-title>
 
         <v-card-actions>
-            <router-link :to="{ name: `product/${product.id}`, params: { product: product } }"><v-btn flat color="orange">Explore</v-btn></router-link>
+            <router-link :to="{ name: 'product', params: { id: product.id } }">
+                <v-btn flat color="orange">Explore</v-btn>
+            </router-link>
             <v-spacer />
             <v-btn icon>
                 <v-icon>favorite</v-icon>

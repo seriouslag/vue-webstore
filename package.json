@@ -7,8 +7,11 @@
     "build": "vue-cli-service build"
   },
   "dependencies": {
+    "@types/deep-equal": "^1.0.1",
     "axios": "^0.18.0",
-    "firebase": "^5.5.1",
+    "deep-equal": "^1.0.1",
+    "firebase": "^5.5.2",
+    "localforage": "^1.7.2",
     "register-service-worker": "^1.0.0",
     "vue": "^2.5.17",
     "vue-class-component": "^6.0.0",
@@ -18,11 +21,11 @@
     "vuex": "^3.0.1"
   },
   "devDependencies": {
-    "@babel/core": "^7.1.0",
+    "@babel/core": "^7.1.2",
     "@babel/polyfill": "^7.0.0",
     "@mdi/font": "^2.8.94",
     "@types/firebase": "^3.2.1",
-    "@types/node": "^10.11.0",
+    "@types/node": "^10.11.3",
     "@vue/cli-plugin-babel": "^3.0.4",
     "@vue/cli-plugin-pwa": "^3.0.4",
     "@vue/cli-plugin-typescript": "^3.0.4",
@@ -31,7 +34,7 @@
     "sass-loader": "^7.0.1",
     "tslint": "^5.11.0",
     "tslint-config-airbnb": "^5.11.0",
-    "typescript": "^3.0.3",
+    "typescript": "^3.1.1",
     "vue-cli-plugin-axios-ts": "^1.0.2",
     "vue-cli-plugin-vuetify": "^0.1.6",
     "vue-template-compiler": "^2.5.17"

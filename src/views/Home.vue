@@ -41,7 +41,6 @@
     private isFailed: boolean = false;
 
     private async created() {
-      console.log('created');
       try {
         const products: Product[] = await this.$api.getAllProducts();
         this.isFailed = false;

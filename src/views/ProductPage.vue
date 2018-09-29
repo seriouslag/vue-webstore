@@ -46,8 +46,10 @@
                                 :label="productOptionsDropdown[0].text"
                         />
                         <span>Price: {{selectedProductOption.price | toCurrency}}</span>
+
                     </v-flex>
-                    <v-btn @click="addToCart()">Add to cart</v-btn>
+                    <v-btn @click="addToCart()" v-if="product.options && product.options.length">Add to cart</v-btn>
+                    <span v-else>Product not for sale at this time.</span>
                     <v-rating
                             half-increments
                             v-model="rating"
@@ -84,13 +86,20 @@
     private isFailed = false;
     private rating: number = 0;
 
-    @Watch('$route', { immediate: true, deep: true })
-    private onRouteChange(newRoute: string) {
-      console.log(newRoute);
-      this.getProductByRouteParams();
+    private created() {
+
     }
 
-    private created() {
+    @Watch('$route', { immediate: true, deep: true })
+    private async onRouteChange(newRoute: string) {
+      await this.getProductByRouteParams();
+      const hash = this.$route.hash.replace('#', '');
+      if (hash && this.selectedProductOption) {
+        const index = this.product.options.findIndex((option: ProductOption) => option.id === parseInt(hash));
+        if (index > -1) {
+          this.selectedProductOptionNumber = index;
+        }
+      }
     }
 
     private async getProductByRouteParams(): Promise<void> {
@@ -102,6 +111,15 @@
           this.isFailed = true;
         }
 
+        const hash = this.$route.hash.replace('#', '');
+        if (hash && this.selectedProductOption) {
+          const index = this.product.options.findIndex((option: ProductOption) => option.id === parseInt(hash));
+          if (index > -1) {
+            this.selectedProductOptionNumber = index;
+          } else {
+            this.$router.push({name: 'product', params: {id: String(this.product.id)}});
+          }
+        }
       } catch (error) {
         this.isFailed = true;
         console.log(error);
@@ -116,6 +134,11 @@
         productName: this.product.name,
       } as CartItem);
     }
+
+    // @Watch('selectedProductOptionNumber')
+    // private selectedProductOptionNumberWatcher(value: number) {
+    //   this.$router.push({name: 'product', params: {id: String(this.product.id)}, hash: '#' + String(this.product.options[value].id)});
+    // }
 
     private get selectedProductOption(): ProductOption | null {
       if (this.isLoading || !this.product || !this.product.options.length) {

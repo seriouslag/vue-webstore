@@ -13,7 +13,7 @@
                         <v-list-tile
                                 :key="`${item.productOption.type}${item.productOption.id}`"
                                 avatar
-                                @click=""
+                                @click="$router.push({ name: 'product', params: {id: String(item.productId)}, hash: String('#' + item.productOption.id) })"
                         >
                             <v-list-tile-avatar>
                                 <img :src="listOfImages(item.productOption)[0]">

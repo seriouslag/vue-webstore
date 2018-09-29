@@ -1,10 +1,11 @@
 import CartItem from '@/models/CartItem';
-import * as firebase from 'firebase';
 import Product from '@/models/Product';
+import {User} from 'firebase';
 
 interface State {
+  version: string;
   cart: CartItem[];
-  user: firebase.User | null;
+  user: User | null;
   products: Product[];
 }
 

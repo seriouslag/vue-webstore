@@ -5,6 +5,5 @@ const adminUrl = String(process.env.VUE_APP_API_ADMIN);
 const searchUrl = String(process.env.VUE_APP_API_SEARCH);
 const searchPage = String(process.env.VUE_APP_API_SEARCHPAGE);
 const allUrl = String(process.env.VUE_APP_API_ALL);
-console.log(process.env);
 
 export { apiUrl, allUrl, productUrl, searchUrl, loginUrl, adminUrl };

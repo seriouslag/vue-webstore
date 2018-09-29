@@ -1,10 +1,12 @@
 import Vue from 'vue';
-import Router from 'vue-router';
+import Router, {Route} from 'vue-router';
 import Home from './views/Home.vue';
+import Storage from '@/utils/storage';
+import deepEqual from 'deep-equal';
 
 Vue.use(Router);
 
-export default new Router({
+const router =  new Router({
   mode: 'history',
   base: process.env.BASE_URL,
   routes: [
@@ -39,3 +41,15 @@ export default new Router({
     }
   ]
 });
+
+// if route is a refresh then clear product cache to get new data
+router.beforeEach(async (to: Route, from: Route, next: Function) => {
+  if ((to.name === from.name && deepEqual(to.params, from.params)) ||
+    to.name === 'home' && from.name === null) {
+    await Storage.removeItem('products');
+    await Storage.removeItem('lastFetchedAll');
+  }
+  next();
+});
+
+export default router;

@@ -79,7 +79,7 @@
   import TheHeaderSearch from './TheHeaderSearch.vue';
   import ShoppingCartIcon from './ShoppingCartIcon.vue';
   import SigninButton from './SigninButton.vue';
-  import * as firebase from 'firebase';
+  import {User} from 'firebase/app';
 
   @Component({
     components: {
@@ -96,13 +96,12 @@
       this.drawer = !this.drawer;
     }
 
-    private get user(): firebase.User | null {
+    private get user(): User | null {
       return this.$store.getters.user;
     }
 
     private async signOut(): Promise<void> {
-      const b = await this.$api.signOut();
-      console.log();
+      await this.$api.signOut();
     }
   }
 </script>
