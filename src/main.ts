@@ -13,6 +13,7 @@ import './filters';
 import FirebaseInitializer from '@/firebase';
 import firebase, {User} from 'firebase/app';
 import 'firebase/auth';
+import LocalUser from '@/models/User';
 
 const api: IApi = new Api();
 
@@ -36,13 +37,30 @@ new Vue({
   created () {
     // Initialize auth change listener
     firebase.auth().onAuthStateChanged(async (user: User | null) => {
-      await store.dispatch('setUser', user);
+      let saveUser: LocalUser | null = null;
+      if (user !== null) {
+        saveUser = {
+          displayName: user.displayName,
+          email: user.email,
+          emailVerified: user.emailVerified,
+          phoneNumber: user.phoneNumber,
+          photoUrl: user.photoURL,
+          isAnonymous: user.isAnonymous,
+        };
+      }
+
+      await store.dispatch('setUser', saveUser);
     });
     // Subscribe to store updates
     store.subscribe(async (mutation, state) => {
       console.log('saving store state');
       // Store the state object as a JSON string
-      await Storage.setItem('store', state);
+      try {
+        const saving = await Storage.setItem('store', state);
+        console.log('save success', saving);
+      } catch (error) {
+        console.log('save error', error, state);
+      }
     });
   },
   render: h => h(App),

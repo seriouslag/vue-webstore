@@ -5,8 +5,8 @@
             <v-toolbar-title>Store</v-toolbar-title>
             <v-spacer />
             <TheHeaderSearch />
-
             <ShoppingCartIcon />
+            <UserIcon :user="user" />
         </v-toolbar>
         <v-navigation-drawer
                 v-model="drawer"
@@ -80,9 +80,11 @@
   import ShoppingCartIcon from './ShoppingCartIcon.vue';
   import SigninButton from './SigninButton.vue';
   import {User} from 'firebase/app';
+  import UserIcon from './TheUserIcon.vue';
 
   @Component({
     components: {
+      UserIcon,
       SigninButton,
       TheHeaderSearch,
       ShoppingCartIcon,
@@ -94,10 +96,13 @@
     @Emit('drawerChanged')
     private drawerToggled(): void {
       this.drawer = !this.drawer;
+      console.log('drawerChanged', this.$store.getters.user);
     }
 
     private get user(): User | null {
-      return this.$store.getters.user;
+      const user = this.$store.getters.user;
+      console.log('navbar user', user);
+      return user;
     }
 
     private async signOut(): Promise<void> {
