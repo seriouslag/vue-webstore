@@ -95,7 +95,8 @@
       await this.getProductByRouteParams();
       const hash = this.$route.hash.replace('#', '');
       if (hash && this.selectedProductOption) {
-        const index = this.product.options.findIndex((option: ProductOption) => option.id === parseInt(hash));
+        const index = this.product.options.findIndex(
+          (option: ProductOption) => option.id === parseInt(hash, 10));
         if (index > -1) {
           this.selectedProductOptionNumber = index;
         }
@@ -113,7 +114,8 @@
 
         const hash = this.$route.hash.replace('#', '');
         if (hash && this.selectedProductOption) {
-          const index = this.product.options.findIndex((option: ProductOption) => option.id === parseInt(hash));
+          const index = this.product.options.findIndex(
+              (option: ProductOption) => option.id === parseInt(hash, 10));
           if (index > -1) {
             this.selectedProductOptionNumber = index;
           } else {
@@ -134,11 +136,6 @@
         productName: this.product.name,
       } as CartItem);
     }
-
-    // @Watch('selectedProductOptionNumber')
-    // private selectedProductOptionNumberWatcher(value: number) {
-    //   this.$router.push({name: 'product', params: {id: String(this.product.id)}, hash: '#' + String(this.product.options[value].id)});
-    // }
 
     private get selectedProductOption(): ProductOption | null {
       if (this.isLoading || !this.product || !this.product.options.length) {
