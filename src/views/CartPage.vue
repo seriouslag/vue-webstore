@@ -10,96 +10,49 @@
             >
                 <v-list three-line v-if="cart.length > 0">
                     <template v-for="(item, index) in cart">
-                        <v-list-tile
-                                :key="`${item.productOption.type}${item.productOption.id}`"
-                                avatar
-                                @click="$router.push({ name: 'product', params: {id: String(item.productId)}, hash: String('#' + item.productOption.id) })"
-                        >
-                            <v-list-tile-avatar>
-                                <img :src="listOfImages(item.productOption)[0]">
-                            </v-list-tile-avatar>
-
-                            <v-list-tile-content>
-                                <v-list-tile-title >
-                                    <v-flex class="row cd-flex">
-                                        <div class="flex">{{`${item.productOption.type} ${item.productName}`}}</div>
-                                    </v-flex>
-                                </v-list-tile-title>
-                                <v-list-tile-sub-title>
-                                    <v-flex class="row cd-flex">
-                                        <div class="flex">Price: {{item.productOption.price | toCurrency}}</div><div class="total">Total: {{item.productOption.price * item.quantity | toCurrency}}</div>
-                                    </v-flex>
-                                </v-list-tile-sub-title>
-                                <v-list-tile-sub-title>
-                                    <v-flex class="row cd-flex">
-                                        <div>Quantity: {{item.quantity}}</div>
-                                    </v-flex>
-                                </v-list-tile-sub-title>
-                            </v-list-tile-content>
-
-                            <v-list-tile-action>
-                                <v-btn icon ripple>
-                                    <v-icon color="grey lighten-1">info</v-icon>
-                                </v-btn>
-                            </v-list-tile-action>
-                        </v-list-tile>
-                        <v-divider
-                                :key="index"
-                        ></v-divider>
+                        <CartListItem  :cartItem="item" :index="index" />
+                        <v-divider :key="index" />
                     </template>
+
                 </v-list>
                 <div v-else>Your cart is empty.</div>
             </div>
             <Loading v-else></Loading>
         </v-flex>
-        <v-card class="pa-3 checkout">
-            Add checkout stuff here
+        <v-card class="pa-3 checkout flex">
+            <v-layout column fill-height>
+                <div>Add checkout stuff here</div>
+                <v-spacer />
+                <v-divider />
+                <strong class="total pa-2">Total: {{total | toCurrency}}</strong>
+            </v-layout>
         </v-card>
     </v-layout>
 </template>
 
 <script lang="ts">
-  import {Component, Vue, Watch} from 'vue-property-decorator';
-  import ProductOption from '../models/ProductOption';
-  import ProductOptionImage from '../models/ProductOptionImage';
+  import {Component, Vue} from 'vue-property-decorator';
   import Product from '../models/Product';
   import Loading from '../components/Loading.vue';
   import CartItem from '../models/CartItem';
-
-  const failedImageLocation = 'https://www.chiefsretro.com/assets/imageError.jpg';
+  import CartListItem from '../components/CartListItem.vue';
 
   @Component({
     components: {
-      Loading
+      Loading,
+      CartListItem,
     },
   })
   export default class CartPage extends Vue {
-    private product!: Product;
-    private isLoading = false;
-    private isFailed = false;
-
     private get cart(): CartItem[] {
       return this.$store.getters.cart;
     }
 
-    @Watch('cart')
-    private updateProductFromCart() {
-
-    }
-
-    private listOfImages(productOption: ProductOption): string[] {
-      if (!productOption ||
-        productOption.images.length === 0)  {
-        return [failedImageLocation];
-      }
-      const listOfImages: string[] = [];
-      productOption.images.forEach(
-        (image: ProductOptionImage) => {
-          if (image.location) {
-            listOfImages.push(image.location);
-          }
-        });
-      return listOfImages.length ? listOfImages : [failedImageLocation];
+    private get total(): number {
+      let total = 0;
+      this.cart.forEach((cartItem: CartItem) =>
+        total += cartItem.productOption.price * cartItem.quantity);
+      return total;
     }
 
     private async getProductById(id: number): Promise<Product> {
@@ -126,6 +79,4 @@
     @media screen and (max-width: $break-small){
 
     }
-
-
 </style>

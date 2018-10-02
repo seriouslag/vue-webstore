@@ -17,15 +17,35 @@
                     autofocus
                     single-line
             >
-                <v-slide-x-reverse-transition
-                        v-show="!showSearch"
-                        slot="append-outer"
-                        mode="out-in"
+                <template slot="no-data">
+                    <v-list-tile>
+                        <v-list-tile-title v-if="isLoading">
+                            Searching...
+                        </v-list-tile-title>
+                        <v-list-tile-title v-else>
+                            No results
+                        </v-list-tile-title>
+                    </v-list-tile>
+                </template>
+
+                <template
+                        slot="item"
+                        slot-scope="{ item, tile }"
                 >
-                    <v-icon
-                            :color="'success'"
-                    ></v-icon>
-                </v-slide-x-reverse-transition>
+                    <v-list-tile-avatar
+                            color="indigo"
+                            class="headline font-weight-light white--text"
+                    >
+                        <v-img v-if="item.defaultImageUrl" :src="item.defaultImageUrl" />
+                        <template v-else>{{item.name.substring(0,1).toLowerCase()}}</template>
+                    </v-list-tile-avatar>
+                    <v-list-tile-content>
+                        <v-list-tile-title v-text="item.name"></v-list-tile-title>
+                    </v-list-tile-content>
+                    <!--<v-list-tile-action>-->
+                        <!--<v-icon>mdi-coin</v-icon>-->
+                    <!--</v-list-tile-action>-->
+                </template>
             </v-autocomplete>
         </v-slide-x-reverse-transition>
         <v-btn

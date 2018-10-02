@@ -1,6 +1,9 @@
 <template>
     <v-btn flat icon @click="$router.push({name: 'cart'})">
-        <v-badge :value="itemCount > 0">
+        <v-badge
+                :value="itemCount > 0"
+                overlap
+                bottom>
             <span slot="badge">{{itemCount}}</span>
             <v-icon>shopping_cart</v-icon>
         </v-badge>

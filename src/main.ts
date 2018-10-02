@@ -33,6 +33,11 @@ new Vue({
     console.log('store is init');
     // Initialize store
     this.$store.commit('initialiseStore');
+    // if (window.localStorage) {
+    //   window.addEventListener('storage', (event: StorageEvent) => {
+    //     console.log('here', event);
+    //   });
+    // }
   },
   created () {
     // Initialize auth change listener

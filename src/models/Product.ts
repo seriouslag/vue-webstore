@@ -5,4 +5,5 @@ export default interface Product {
   name: string;
   description: string;
   options: ProductOption[];
+  defaultImageUrl: string;
 }

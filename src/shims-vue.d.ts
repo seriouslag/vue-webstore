@@ -1,3 +1,4 @@
+declare module 'vuex-shared-mutations';
 declare module '*.vue' {
   import Vue from 'vue';
   import {PropValidator} from 'vue/types/options';

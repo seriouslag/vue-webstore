@@ -57,6 +57,20 @@
                         </v-btn>
                     </router-link>
                 </v-list-tile>
+                <v-list-tile>
+                    <router-link class="icon-router-link" to="/cart">
+                        <v-btn flat large>
+                            <v-list-tile-action>
+                                <ShoppingCartIcon />
+                            </v-list-tile-action>
+                            <v-list-tile-content>
+                                <v-list-tile-title>
+                                    Contact
+                                </v-list-tile-title>
+                            </v-list-tile-content>
+                        </v-btn>
+                    </router-link>
+                </v-list-tile>
                 <v-list-tile v-if="user === null">
                     <SigninButton provider="google" btnText="Google" />
                 </v-list-tile>

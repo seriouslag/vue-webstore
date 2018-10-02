@@ -4,6 +4,7 @@ import CartItem from '@/models/CartItem';
 import {State} from './StoreTypes';
 import Storage from '@/utils/storage';
 import {User} from 'firebase';
+import * as createMutationsSharer from 'vuex-shared-mutations';
 import UserCredential = firebase.auth.UserCredential;
 
 Vue.use(Vuex);
@@ -98,4 +99,11 @@ const getters: GetterTree<State, {}> = {
   version: state => state.version,
 };
 
-export default new Vuex.Store<State>({ state, mutations, actions, getters});
+export default new Vuex.Store<State>(
+  {
+    state,
+    mutations,
+    actions,
+    getters,
+    plugins: [createMutationsSharer({ predicate: ['addItemToCart', 'setUser'] })]
+  });
