@@ -44,6 +44,8 @@
     },
   })
   export default class CartPage extends Vue {
+    private isLoading = false;
+    private isFailed = false;
     private get cart(): CartItem[] {
       return this.$store.getters.cart;
     }
@@ -63,10 +65,6 @@
 
 <style lang="scss" scoped>
     $break-small: 320px;
-
-    .cd-flex {
-        display: flex;
-    }
 
     .total {
         font-weight: bold;

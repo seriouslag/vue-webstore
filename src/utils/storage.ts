@@ -18,10 +18,12 @@ export default abstract class Storage {
   }
 
   static setItem<T>(key: string, value: T): Promise<T> {
+    console.log('setting', key, value);
     return localForage.setItem(key, value);
   }
 
   static getItem<T>(key: string): Promise<T> {
+    console.log('getting', key);
     return localForage.getItem(key);
   }
 

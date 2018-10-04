@@ -16,6 +16,7 @@ export default class Api implements IApi {
   }
 
   private async updateLocalProductsFromStorage(): Promise<void> {
+    await Storage.ready();
     if (!this.lastFetchedAll) {
       this.lastFetchedAll = await Storage.getItem<number>('lastFetchedAll');
     }
@@ -49,6 +50,7 @@ export default class Api implements IApi {
   }
 
   async getAllProductsByPage(pageNum: number, itemsPerPage: number): Promise<Product[]> {
+    await this.updateLocalProductsFromStorage();
     const products = await Fetch.get<Product[]>(
       `${apiUrl}/${searchUrl}?page=${pageNum}+itemsPerPage=${itemsPerPage}`, {}
       );
@@ -66,6 +68,7 @@ export default class Api implements IApi {
   }
 
   async getProductById(id: number): Promise<Product> {
+    await this.updateLocalProductsFromStorage();
     const match = this.localProductStore.findIndex(localProduct => (localProduct.id === id));
     if (match > -1) {
       return Promise.resolve(this.localProductStore[match]);
@@ -77,6 +80,7 @@ export default class Api implements IApi {
   }
 
   async searchProductByName(name: string): Promise<Product[]> {
+    await this.updateLocalProductsFromStorage();
     const products = await Fetch.get<Product[]>(`${apiUrl}/${searchUrl}?productName=${name}`, {});
     products.forEach(async (product) => {
       const match =

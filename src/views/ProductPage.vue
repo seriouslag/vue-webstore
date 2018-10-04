@@ -70,8 +70,10 @@
   import Product from '../models/Product';
   import Loading from '../components/Loading.vue';
   import CartItem from '../models/CartItem';
+  import {failedImage} from '../utils/defaults';
+  import Storage from '@/utils/storage';
 
-  const failedImageLocation = 'https://www.chiefsretro.com/assets/imageError.jpg';
+  const failedImageLocation = failedImage;
 
   @Component({
     components: {
@@ -86,11 +88,12 @@
     private isFailed = false;
     private rating: number = 0;
 
-    private created() {
-
+    private async mounted() {
+      await  Storage.ready();
+      await this.onRouteChange('');
     }
 
-    @Watch('$route', { immediate: true, deep: true })
+    @Watch('$route', { immediate: false, deep: true })
     private async onRouteChange(newRoute: string) {
       await this.getProductByRouteParams();
       const hash = this.$route.hash.replace('#', '');
@@ -129,6 +132,7 @@
     }
 
     private async addToCart() {
+      console.log(this.selectedProductOption);
       await this.$store.dispatch('addItemToCart', {
         productOption: this.selectedProductOption,
         quantity: 1,

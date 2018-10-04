@@ -4,7 +4,8 @@
         <v-card
                 slot-scope="{ hover }"
                 :class="`elevation-${hover ? 12 : 2}`"
-                width="300px">
+                width="300px"
+                max-height="400px">
             <router-link :to="{name: 'product', params: { id: product.id }}">
                 <v-img
                         :src="imageSrc"
@@ -42,8 +43,9 @@
 <script lang="ts">
   import {Component, Prop, Vue} from 'vue-property-decorator';
   import Product from '../models/Product';
+  import {failedImage} from '../utils/defaults';
 
-  const failedImageLocation = 'https://www.chiefsretro.com/assets/imageError.jpg';
+  const failedImageLocation = failedImage;
 
   @Component
   export default class ProductCard extends Vue {
@@ -54,18 +56,7 @@
     private product!: Product;
 
     private get imageSrc(): string {
-      const url = this.product.defaultImageUrl;
-      // this.product.options.forEach((option: ProductOption) => {
-      //   if (url) return;
-      //   option.images.forEach((image: ProductOptionImage) => {
-      //     if (url) return;
-      //     if (image.location) {
-      //       url = image.location;
-      //       return;
-      //     }
-      //   });
-      // });
-      return !!url ? url : failedImageLocation;
+      return !!this.product.defaultImageUrl ? this.product.defaultImageUrl : failedImageLocation;
     }
   }
 </script>

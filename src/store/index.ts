@@ -17,7 +17,7 @@ const state: State =  {
 };
 
 const mutations: MutationTree<State> = {
-  async initialiseStore(state: State) {
+  async initializeStore(state: State) {
     console.log('init store');
     // Check if the ID exists
     const store: State = await Storage.getItem<State>('store');
@@ -43,18 +43,37 @@ const mutations: MutationTree<State> = {
   },
   addItemToCart (state: State, payloadItem: CartItem) {
     let wasInCart = false;
-    state.cart.forEach(
-      (cartItem: CartItem, index: number) => {
-        if (payloadItem.productOption.id === cartItem.productOption.id) {
-          wasInCart = true;
-          (state.cart as CartItem[])[index].quantity =
-            (state.cart as CartItem[])[index].quantity + 1;
-          return false;
-        }
-      });
+    const index = state.cart.findIndex(cartItem =>
+      cartItem.productOption.id === payloadItem.productOption.id);
+    if (index > -1) {
+      wasInCart = true;
+      (state.cart as CartItem[])[index].quantity =
+        (state.cart as CartItem[])[index].quantity + payloadItem.quantity;
+      return false;
+    }
+    // state.cart.forEach(
+    //   (cartItem: CartItem, index: number) => {
+    //     if (payloadItem.productOption.id === cartItem.productOption.id) {
+    //       wasInCart = true;
+    //       (state.cart as CartItem[])[index].quantity =
+    //         (state.cart as CartItem[])[index].quantity + payloadItem.quantity;
+    //       return false;
+    //     }
+    //   });
     if (!wasInCart) {
       (state.cart as CartItem[]).push(payloadItem);
     }
+  },
+  removeItemFromCart (state: State, payloadItem: CartItem) {
+    state.cart.forEach(
+      (cartItem: CartItem, index: number) => {
+        if (payloadItem.productOption.id === cartItem.productOption.id) {
+          (state.cart as CartItem[])[index].quantity =
+            (state.cart as CartItem[])[index].quantity - payloadItem.quantity;
+          return false;
+        }
+      }
+    );
   },
   setUser (state: State, user: User) {
     state.user = user;
@@ -62,7 +81,7 @@ const mutations: MutationTree<State> = {
 };
 
 const actions: ActionTree<State, {}> = {
-  async initialiseStore({commit, getters}) {
+  async initializeStore({commit, getters}) {
     // Check if the ID exists
     const store: State = await Storage.getItem<State>('store');
     if (store) {
@@ -78,6 +97,9 @@ const actions: ActionTree<State, {}> = {
   },
   addItemToCart ({commit}, item: CartItem) {
     commit('addItemToCart', item);
+  },
+  removeItemFromCart ({commit}, item: CartItem) {
+    commit('removeItemFromCart', item);
   },
   setUser ({commit}, user: UserCredential) {
     commit('setUser', user);
@@ -105,5 +127,9 @@ export default new Vuex.Store<State>(
     mutations,
     actions,
     getters,
-    plugins: [createMutationsSharer({ predicate: ['addItemToCart', 'setUser'] })]
+    plugins: [
+      createMutationsSharer({ predicate: [
+        'addItemToCart', 'removeItemFromCart', 'setUser',
+      ]}),
+    ],
   });

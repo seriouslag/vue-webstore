@@ -15,29 +15,30 @@ import firebase, {User} from 'firebase/app';
 import 'firebase/auth';
 import LocalUser from '@/models/User';
 
+import './styles/index.scss';
+
 const api: IApi = new Api();
 
 Vue.config.productionTip = false;
 Vue.prototype.$api = api;
 Vue.prototype.$storage = Storage;
 
+let isStoreInit = false;
+
 new Vue({
   router,
   store,
   async beforeCreate() {
     // Initialize Firebase before storage
-    // because it takes a long time and the created hook will fire before FB is init
+    // because it takes a long time and the created hook will fire before Firebase is init
     await FirebaseInitializer.init();
     // Initialize local storage
     await Storage.init();
-    console.log('store is init');
+    console.log('storage is init');
     // Initialize store
-    this.$store.commit('initialiseStore');
-    // if (window.localStorage) {
-    //   window.addEventListener('storage', (event: StorageEvent) => {
-    //     console.log('here', event);
-    //   });
-    // }
+    await this.$store.dispatch('initializeStore');
+    isStoreInit = true;
+    console.log('store is init');
   },
   created () {
     // Initialize auth change listener
@@ -58,6 +59,9 @@ new Vue({
     });
     // Subscribe to store updates
     store.subscribe(async (mutation, state) => {
+      if (!isStoreInit) {
+        return;
+      }
       console.log('saving store state');
       // Store the state object as a JSON string
       try {
