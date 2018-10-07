@@ -38,8 +38,23 @@ const router =  new Router({
       path: '/cart',
       name: 'cart',
       component: () =>  import('./views/CartPage.vue'),
-    }
-  ]
+    },
+    {
+      path: '/admin',
+      name: 'admin',
+      component: () =>  import('./views/admin/AdminPage.vue'),
+    },
+    {
+      path: '/admin/addProduct',
+      name: 'adminAddProduct',
+      component: () =>  import('./views/admin/AddProductPage.vue'),
+    },
+    {
+      path: '*',
+      name: 'NotFound',
+      component: () =>  import('./views/NotFoundPage.vue'),
+    },
+  ],
 });
 
 // if route is a refresh then clear product cache to get new data
