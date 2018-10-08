@@ -1,3 +1,20 @@
+<template>
+  <v-app id="inspire">
+      <TheNavbar />
+    <v-content>
+      <v-layout class="pa-5 pr" column justify-center>
+        <v-divider />
+        <div class="pa-2" style="text-align: center">Shop.com</div>
+        <v-divider />
+      </v-layout>
+      <v-container fluid fill-height>
+        <router-view></router-view>
+      </v-container>
+    </v-content>
+    <TheFooter />
+  </v-app>
+</template>
+
 <script lang="ts">
   import {Component, Vue} from 'vue-property-decorator';
   import TheHeaderSearch from './components/TheHeaderSearch.vue';
@@ -13,18 +30,6 @@
   })
   export default class App extends Vue {}
 </script>
-
-<template>
-  <v-app id="inspire">
-      <TheNavbar />
-    <v-content>
-      <v-container fluid fill-height>
-        <router-view></router-view>
-      </v-container>
-    </v-content>
-    <TheFooter />
-  </v-app>
-</template>
 
 <style lang="scss">
 #app {

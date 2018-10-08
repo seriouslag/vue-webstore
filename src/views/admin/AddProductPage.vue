@@ -37,7 +37,7 @@
 
                 </v-card-text>
                 <v-card-actions>
-                    <v-btn>Submit</v-btn>
+                    <v-btn :disabled="isSubmitDisabled">Submit</v-btn>
                 </v-card-actions>
             </v-form>
         </v-card>
@@ -47,14 +47,14 @@
 <script lang="ts">
   import {Component, Vue} from 'vue-property-decorator';
   import Loading from '@/components/Loading.vue';
-  import ProductOption from '../../models/ProductOption';
-  import ProductOptionDialog from '../../components/admin/ProductOptionDialog.vue';
+  import ProductOption from '@/models/ProductOption';
+  import ProductOptionDialog from '@/components/admin/ProductOptionDialog.vue';
 
   @Component({
     components: {
-      ProductOptionDialog,
       Loading,
-    },
+      ProductOptionDialog,
+    }
   })
   export default class AddProductPage extends Vue {
     private isLoading = false;
@@ -81,13 +81,9 @@
 
     private productOptions: ProductOption[] = [];
 
-    private get isSubmitDisabled() {
+    private get isSubmitDisabled(): boolean {
       return this.isLoading || !this.valid || this.productOptions.length <= 0;
     }
-
-    private productOptionType = '';
-    private productOptionPrice = '';
-    private productOptionQuantity = '';
 
   }
 </script>
