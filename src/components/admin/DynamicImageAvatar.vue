@@ -2,14 +2,14 @@
     <!--<v-img :src="thisSrc" />-->
     <img v-if="thisSrc" :src="thisSrc" />
     <v-progress-circular
-            indeterminate
+            :value="value"
             v-else
             color="success"
     />
 </template>
 
 <script lang="ts">
-  import {Component, Prop, Vue, Watch} from 'vue-property-decorator';
+  import {Component, Prop, Vue} from 'vue-property-decorator';
 
   @Component
   export default class DynamicImageAvatar extends Vue {
@@ -18,11 +18,10 @@
     })
     src!: string;
 
-    // Maybe remove?
-    @Watch('src', { immediate: false, deep: true })
-    private doThing() {
-      const b = this.src;
-    }
+    @Prop({
+      default: 0,
+    })
+    value!: number | string;
 
     private get thisSrc() {
       return this.src;

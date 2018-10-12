@@ -1,5 +1,5 @@
 import Product from '@/models/Product';
-import * as firebase from 'firebase';
+import * as firebase from 'firebase/app';
 
 export default interface IApi {
   getProductById(id: number): Promise<Product>;

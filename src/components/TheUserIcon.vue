@@ -72,7 +72,7 @@
 
 <script lang="ts">
   import {Component, Prop, Vue} from 'vue-property-decorator';
-  import {User} from 'firebase';
+  import {User} from 'firebase/app';
   import SigninButton from './SigninButton.vue';
 
   @Component({

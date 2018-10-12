@@ -3,7 +3,7 @@ import Vuex, {ActionTree, GetterTree, MutationTree} from 'vuex';
 import CartItem from '@/models/CartItem';
 import {State} from './StoreTypes';
 import Storage from '@/utils/storage';
-import {User} from 'firebase';
+import {User} from 'firebase/app';
 import * as createMutationsSharer from 'vuex-shared-mutations';
 import UserCredential = firebase.auth.UserCredential;
 
