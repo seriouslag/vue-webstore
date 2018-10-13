@@ -3,6 +3,8 @@ node_modules
 /dist
 
 firebase.ts
+/.firebase
+hosting.*.cache
 
 # local env files
 .env.local

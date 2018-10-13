@@ -61,7 +61,6 @@
                                     clearable
                                     v-model="quantity"
                             />
-
                             <v-btn
                                     color="primary"
                                     @click="nextStep"
@@ -73,24 +72,12 @@
                             <v-layout column>
                                 <v-list two-line>
                                     <draggable v-model="localImages">
-                                        <v-list-tile v-for="(image, index) in localImages">
-                                            <span class="pr-2">{{ `${index + 1}. ` }}</span>
-                                            <v-list-tile-avatar>
-                                                <DynamicImageAvatar :src="image.src" :value="image.value" />
-                                            </v-list-tile-avatar>
-                                            <v-list-tile-title>
-                                                {{image.file.name}}
-                                            </v-list-tile-title>
-                                            <v-list-tile-action>
-                                                <v-btn
-                                                        icon
-                                                        color="error"
-                                                        v-on:click="removeImage(index)"
-                                                >
-                                                    <v-icon>delete</v-icon>
-                                                </v-btn>
-                                            </v-list-tile-action>
-                                        </v-list-tile>
+                                        <ProductOptionImageListItem
+                                                v-for="(image, index) in localImages"
+                                                :image="image"
+                                                :index="index"
+                                                @imageRemoved="removeImage"
+                                        />
                                     </draggable>
                                 </v-list>
                                 <v-btn
@@ -129,9 +116,12 @@
                         <v-stepper-content step="3">
                             <v-layout>
                                 <v-list two-line>
-                                    <v-list-tile v-for="suboption in suboptions">
-
-                                    </v-list-tile>
+                                    <SubOptionListItem
+                                            v-for="(suboption, index) in suboptions"
+                                            :suboption="suboption"
+                                            :index="index"
+                                            @suboptionRemoved="removeSuboption"
+                                    />
                                 </v-list>
                                 <v-btn
                                         icon
@@ -180,17 +170,16 @@
   import {Component, Vue} from 'vue-property-decorator';
   import ProductOptionImage from '@/models/ProductOptionImage';
   import ProductSuboption from '@/models/ProductSuboption';
+  import LoadingImageWrapper from '@/models/LoadingImageWrapper';
   import DynamicImageAvatar from './DynamicImageAvatar.vue';
   import draggable from 'vuedraggable';
-
-  interface ImageWrapper  {
-    file: File;
-    src: string | null;
-    value: number;
-  }
+  import ProductOptionImageListItem from './ProductOptionImageListItem.vue';
+  import SubOptionListItem from './SubOptionListItem.vue';
 
   @Component({
     components: {
+      SubOptionListItem,
+      ProductOptionImageListItem,
       DynamicImageAvatar,
       draggable
     }
@@ -206,10 +195,8 @@
     private price = '';
     private quantity = '';
     private uploadedImages: ProductOptionImage[] = [];
-    // private localImages: File[] = [];
-    // private localImageSrc: string[] = [];
 
-    private localImages: ImageWrapper[] = [];
+    private localImages: LoadingImageWrapper[] = [];
     private suboptions: ProductSuboption[] = [];
 
     private isMounted = false;
@@ -234,9 +221,12 @@
       if (index > -1 && this.localImages.length > index) {
         this.localImages.splice(index, 1);
       }
-      // if (index > -1 && this.localImageSrc.length > index) {
-      //   this.localImageSrc.splice(index, 1);
-      // }
+    }
+
+    private removeSuboption(index: number): void {
+      if (index > -1 && this.suboptions.length > index) {
+        this.suboptions.splice(index, 1);
+      }
     }
 
     private onFilePicked(event: EventTarget): void {
@@ -298,10 +288,28 @@
       this.localImages[index].src = dataUrl;
     }
 
-    private resetOrientation(srcBase64: string, orientation: number,
-                             index: number, callback: Function): void {
+    private resetOrientation(
+      srcBase64: string,
+      orientation: number,
+      index: number,
+      callback: Function): void {
+
       const img = new Image();
-      img.addEventListener('load', (e: Event) => {
+      img.addEventListener('load', async (e: Event) =>
+        this.handleImageLoad(e, img, orientation, index, callback));
+
+      img.src = srcBase64;
+    }
+
+    private handleImageLoad(
+      e: Event,
+      img: HTMLImageElement,
+      orientation: number,
+      index: number,
+      callback: Function
+    ): Promise<void> {
+
+      return new Promise((resolve) => {
         // Defines canvases max height/width
         // Should match the display size
         const maxSize = 40;
@@ -317,7 +325,6 @@
         canvas.width = maxSize;
         canvas.height = maxSize;
         const ctx: CanvasRenderingContext2D = canvas.getContext('2d') as CanvasRenderingContext2D;
-
         // set proper canvas dimensions before transform & export
         if (width > height) {
           ratio = height / width;
@@ -343,9 +350,8 @@
 
         // export base64
         callback(canvas.toDataURL(), index);
+        resolve();
       });
-
-      img.src = srcBase64;
     }
 
     private rotateCavasCtx(
