@@ -4,6 +4,8 @@
             lazy
             persistent
             scrollable
+            fullscreen
+            full-width
     >
         <v-btn
                 icon
@@ -14,12 +16,11 @@
         </v-btn>
         <v-card>
 
-            <v-card-title
-                    class="headline grey lighten-2"
-                    primary-title
+            <div
+                    class="pa-3 headline grey lighten-2"
             >
                 Add product option
-            </v-card-title>
+            </div>
 
             <v-card-text>
                 <v-stepper v-model="editDialogStepper" alt-labels>
@@ -114,19 +115,23 @@
                             </v-btn>
                         </v-stepper-content>
                         <v-stepper-content step="3">
-                            <v-layout>
-                                <v-list two-line>
-                                    <SubOptionListItem
-                                            v-for="(suboption, index) in suboptions"
-                                            :suboption="suboption"
-                                            :index="index"
-                                            @suboptionRemoved="removeSuboption"
-                                    />
+                            <v-layout column>
+                                <v-list three-line>
+                                    <draggable v-model="suboptions">
+                                        <SubOptionListItem
+                                                v-for="(suboption, index) in suboptions"
+                                                :suboption="suboption"
+                                                :index="index"
+                                                @validationChanged="updateValidation"
+                                                @suboptionRemoved="removeSuboption"
+                                        />
+                                    </draggable>
                                 </v-list>
                                 <v-btn
                                         icon
                                         color="success"
                                         slot="activator"
+                                        @click="addSuboption"
                                 >
                                     <v-icon>add</v-icon>
                                 </v-btn>
@@ -175,6 +180,7 @@
   import draggable from 'vuedraggable';
   import ProductOptionImageListItem from './ProductOptionImageListItem.vue';
   import SubOptionListItem from './SubOptionListItem.vue';
+  import SuboptionListItemValidationChangeEmit from '../../models/SuboptionListItemValidationChangeEmit';
 
   @Component({
     components: {
@@ -198,6 +204,7 @@
 
     private localImages: LoadingImageWrapper[] = [];
     private suboptions: ProductSuboption[] = [];
+    private validationStatus: SuboptionListItemValidationChangeEmit[] = [];
 
     private isMounted = false;
 
@@ -210,6 +217,7 @@
     private nextStep() {
       // Some reason a number plus another number was resulting in concatenation
       // of the numbers and not addition
+
       this.editDialogStepper = parseInt(String(this.editDialogStepper), 10) + 1;
     }
 
@@ -221,6 +229,25 @@
       if (index > -1 && this.localImages.length > index) {
         this.localImages.splice(index, 1);
       }
+    }
+
+    private addSuboption(): void {
+      const newOption: ProductSuboption = {
+        type: '',
+        price: null,
+        quantity: null,
+      };
+
+      this.validationStatus.push({
+        isValid: false,
+        index: this.suboptions.length,
+      } as SuboptionListItemValidationChangeEmit);
+
+      this.suboptions.push(newOption);
+    }
+
+    private updateValidation(event: SuboptionListItemValidationChangeEmit): void {
+      this.validationStatus[event.index].isValid = event.isValid;
     }
 
     private removeSuboption(index: number): void {
@@ -412,3 +439,7 @@
     }
   }
 </script>
+
+<style lang="scss" scoped>
+
+</style>

@@ -13,7 +13,6 @@
                         <CartListItem  :cartItem="item" :index="index" />
                         <v-divider :key="index" />
                     </template>
-
                 </v-list>
                 <div v-else>Your cart is empty.</div>
             </div>

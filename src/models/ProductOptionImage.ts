@@ -1,5 +1,5 @@
 export default interface ProductOptionImage {
-  id: number;
+  id?: number;
   location: string;
   hasThumb: boolean;
   order: number;

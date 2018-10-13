@@ -1,6 +1,6 @@
 export default interface ProductSuboption {
-  id: number;
+  id?: number;
   type: string;
-  price: number;
-  quantity: number;
+  price: number | null;
+  quantity: number | null;
 }

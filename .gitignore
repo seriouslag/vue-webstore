@@ -4,7 +4,7 @@ node_modules
 
 firebase.ts
 /.firebase
-hosting.*.cache
+.firebase/hosting.*.cache
 
 # local env files
 .env.local

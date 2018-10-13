@@ -74,6 +74,7 @@ const mutations: MutationTree<State> = {
         }
       }
     );
+    state.cart = state.cart.filter((cartItem: CartItem) => cartItem.quantity > 0);
   },
   setUser (state: State, user: User) {
     state.user = user;

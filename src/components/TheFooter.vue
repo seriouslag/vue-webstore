@@ -1,6 +1,6 @@
 <template>
     <v-footer flat app>
-        <span>&copy; 2018</span>
+        <span class="pa-3">&copy; 2018</span>
     </v-footer>
 </template>
 
