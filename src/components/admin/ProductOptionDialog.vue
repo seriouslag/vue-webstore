@@ -180,7 +180,7 @@
   import draggable from 'vuedraggable';
   import ProductOptionImageListItem from './ProductOptionImageListItem.vue';
   import SubOptionListItem from './SubOptionListItem.vue';
-  import SuboptionListItemValidationChangeEmit from '../../models/SuboptionListItemValidationChangeEmit';
+  import ValidationChangeEmit from '../../models/ValidationChangeEmit';
 
   @Component({
     components: {
@@ -204,7 +204,7 @@
 
     private localImages: LoadingImageWrapper[] = [];
     private suboptions: ProductSuboption[] = [];
-    private validationStatus: SuboptionListItemValidationChangeEmit[] = [];
+    private validationStatus: ValidationChangeEmit[] = [];
 
     private isMounted = false;
 
@@ -241,12 +241,12 @@
       this.validationStatus.push({
         isValid: false,
         index: this.suboptions.length,
-      } as SuboptionListItemValidationChangeEmit);
+      } as ValidationChangeEmit);
 
       this.suboptions.push(newOption);
     }
 
-    private updateValidation(event: SuboptionListItemValidationChangeEmit): void {
+    private updateValidation(event: ValidationChangeEmit): void {
       this.validationStatus[event.index].isValid = event.isValid;
     }
 

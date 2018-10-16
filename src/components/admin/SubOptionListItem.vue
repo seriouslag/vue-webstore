@@ -61,11 +61,11 @@
 <script lang="ts">
   import {Component, Emit, Prop, Vue} from 'vue-property-decorator';
   import ProductSuboption from '@/models/ProductSuboption';
-  import SuboptionListItemValidationChangeEmit from '@/models/SuboptionListItemValidationChangeEmit';
+  import ValidationChangeEmit from '@/models/ValidationChangeEmit';
 
   @Component
   export default class SubOptionListItem extends Vue {
-    $refs!: {
+    public $refs!: {
       form: any,
     };
 
@@ -97,7 +97,7 @@
       return {
         isValid: this.isValid,
         index: this.index,
-      } as SuboptionListItemValidationChangeEmit;
+      } as ValidationChangeEmit;
     }
 
     @Emit('suboptionRemoved')
