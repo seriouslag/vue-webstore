@@ -1,7 +1,15 @@
+// @ts-ignore
+import {PropValidator} from 'vue/types/options';
+
+// @ts-ignore
 declare module 'vuex-shared-mutations';
+// @ts-ignore
 declare module 'vuedraggable';
 declare module '*.vue' {
+  // @ts-ignore
   import Vue from 'vue';
+  // @ts-ignore
+  // noinspection TsLint
   import {PropValidator} from 'vue/types/options';
 
   // @ts-ignore
@@ -10,6 +18,95 @@ declare module '*.vue' {
         dark: Boolean,
         id: String,
         light: Boolean
+      }
+    });
+    Vue.component('v-timeline', {
+      props: {
+        alignTop: Boolean,
+        dark: Boolean,
+        dense: Boolean,
+        light: Boolean
+      }
+    });
+    Vue.component('v-btn-toggle', {
+      props: {
+        activeClass: String,
+        dark: Boolean,
+        light: Boolean,
+        mandatory: Boolean,
+        max: [Number, String],
+        multiple: Boolean,
+        value: null as any as PropValidator<any>,
+      }
+    });
+    Vue.component('v-item-toggle', {
+      props: {
+        activeClass: String,
+        dark: Boolean,
+        light: Boolean,
+        mandatory: Boolean,
+        max: [Number, String],
+        multiple: Boolean,
+        value: null as any as PropValidator<any>,
+      }
+    });
+    Vue.component('v-window', {
+      props: {
+        activeClass: String,
+        dark: Boolean,
+        light: Boolean,
+        mandatory: Boolean,
+        max: [Number, String],
+        multiple: Boolean,
+        reverse: Boolean,
+        touch: Object,
+        touchless: Boolean,
+        value: null as any as PropValidator<any>,
+        vertical: Boolean
+      }
+    });
+    Vue.component('v-window-item', {
+      props: {
+        activeClass: String,
+        disabled: Boolean,
+        lazy: Boolean,
+        reverseTransition: [Boolean, String],
+        transition: [Boolean, String],
+        value: null as any as PropValidator<any>,
+      }
+    });
+    Vue.component('v-item', {
+      props: {
+        activeClass: String,
+        disabled: Boolean,
+        value: null as any as PropValidator<any>,
+      }
+    });
+    Vue.component('v-treeview', {
+      props: {
+        activatable: Boolean,
+        active: Array,
+        activeClass: String,
+        dark: Boolean,
+        expandIcon: String,
+        hoverable: Boolean,
+        indeterminateIcon: String,
+        itemChildren: String,
+        itemKey: String,
+        itemText: String,
+        items: Array,
+        loadChildren: Function,
+        loadingIcon: Boolean,
+        multipleActive: Boolean,
+        offIcon: String,
+        onIcon: String,
+        open: Array,
+        openAll: Boolean,
+        openOnClick: Boolean,
+        selectable: Boolean,
+        selectedColor: String,
+        transition: Boolean,
+        value: Array
       }
     });
     Vue.component('v-alert', {

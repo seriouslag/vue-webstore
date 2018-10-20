@@ -25,6 +25,7 @@
                         <v-subheader>
                             Product options
                         </v-subheader>
+
                         <v-list-tile v-for="(productOption, index) in productOptions">
                             <v-list-tile-avatar>
                                 <v-img v-if="productOption.images && productOption.images.length"  :src="productOption.images[0].location" />
@@ -82,6 +83,5 @@
     private saveProductOption(productOption: ProductOption): void {
       this.productOptions.push(productOption);
     }
-
   }
 </script>
