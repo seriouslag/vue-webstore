@@ -5,6 +5,7 @@
                  wrap
                  align-content-center="true"
                  justify-center="true"
+                 align-start
                  v-if="products.length > 0 && !isLoading">
             <product-card
                     class="ma-3"

@@ -27,8 +27,9 @@
                         v-else
                 >
                     <v-img
+                            contain
                             :src="listOfImages[0]"
-                            :style="{ height: imageHeight, width: imageWidth }"
+                            :style="{ maxHeight: imageHeight, maxWidth: imageWidth }"
                     />
                 </v-flex>
                 <v-container
@@ -187,10 +188,10 @@
     private get imageHeight () {
       switch (this.$vuetify.breakpoint.name) {
         case 'xs': return '350px';
-        case 'sm': return '500px';
-        case 'md': return '500px';
-        case 'lg': return '600px';
-        case 'xl': return '700px';
+        case 'sm': return '400px';
+        case 'md': return '400px';
+        case 'lg': return '500px';
+        case 'xl': return '600px';
       }
     }
 

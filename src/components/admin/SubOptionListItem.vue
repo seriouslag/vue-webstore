@@ -17,7 +17,7 @@
                         <v-text-field
                                 v-model="suboption.price"
                                 label="Price"
-                                :rules="[rules.number, rules.positive]"
+                                :rules="[rules.number, rules.positive, rules.decimal]"
                                 required
                         />
                         <v-text-field
@@ -62,6 +62,7 @@
   import {Component, Emit, Prop, Vue} from 'vue-property-decorator';
   import ProductSuboption from '@/models/ProductSuboption';
   import ValidationChangeEmit from '@/models/ValidationChangeEmit';
+  import Rules from '@/utils/validationRules';
 
   @Component
   export default class SubOptionListItem extends Vue {
@@ -81,12 +82,7 @@
     private index!: number;
     private isValid = true;
 
-    private rules: any = {
-      required: (v: string) => !!v || 'Required.',
-      length255: (v: string) => (v && v.length <= 255) || 'Must be less than 256 characters',
-      number: (v: string) => (!v || !isNaN(parseFloat(v))) || 'Must be a number',
-      positive: (v: string) =>  (!v || parseFloat(v) > 0) || 'Must be greater than 0',
-    };
+    private rules = Rules;
 
     private checkForm(): void {
       this.$refs.form.validate();

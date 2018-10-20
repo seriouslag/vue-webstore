@@ -8,14 +8,14 @@
                 <v-card-text>
                     <v-text-field
                             v-model="name"
-                            :rules="nameRules"
+                            :rules="[rules.required, rules.length255]"
                             :counter="nameMaxLength"
                             label="Product name"
                             required
                     />
                     <v-textarea
                             v-model="description"
-                            :rules="descriptionRules"
+                            :rules="[rules.required, rules.length255]"
                             :counter="descriptionMaxLength"
                             label="Product description"
                             required
@@ -25,12 +25,16 @@
                         <v-subheader>
                             Product options
                         </v-subheader>
-                        <v-list-tile v-for="productOption in productOptions">
+                        <v-list-tile v-for="(productOption, index) in productOptions">
+                            <v-list-tile-avatar>
+                                <v-img v-if="productOption.images && productOption.images.length"  :src="productOption.images[0].location" />
+                            </v-list-tile-avatar>
+                            {{index}}. {{productOption.type}}
                         </v-list-tile>
 
                         <v-list-tile>
                             <v-list-tile-content>
-                                <ProductOptionDialog />
+                                <ProductOptionDialog @save="saveProductOption" />
                             </v-list-tile-content>
                         </v-list-tile>
                     </v-list>
@@ -49,6 +53,7 @@
   import Loading from '@/components/Loading.vue';
   import ProductOption from '@/models/ProductOption';
   import ProductOptionDialog from '@/components/admin/ProductOptionDialog.vue';
+  import Rules from '@/utils/validationRules';
 
   @Component({
     components: {
@@ -62,27 +67,20 @@
     private editDialogStepper = 0;
     private valid = false;
     private name = '';
-    private nameMaxLength = 255;
+    private rules = Rules;
 
     private description = '';
+    private nameMaxLength = 255;
     private descriptionMaxLength = 255;
-
-    private nameRules = [
-      (v: any) => !!v || 'Name is required',
-      (v: any) => (v && v.length <= this.nameMaxLength) ||
-        `Name must be less than ${this.nameMaxLength} characters`,
-    ];
-
-    private descriptionRules = [
-      (v: any) => !!v || 'Name is required',
-      (v: any) => (v && v.length <= this.nameMaxLength) ||
-        `Name must be less than ${this.descriptionMaxLength} characters`,
-    ];
 
     private productOptions: ProductOption[] = [];
 
     private get isSubmitDisabled(): boolean {
       return this.isLoading || !this.valid || this.productOptions.length <= 0;
+    }
+
+    private saveProductOption(productOption: ProductOption): void {
+      this.productOptions.push(productOption);
     }
 
   }

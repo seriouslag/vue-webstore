@@ -11,7 +11,10 @@
                         :src="imageSrc"
                         aspect-ratio="2.75"
                         height="200px"
-                />
+                        contain
+                >
+                    <div class="fill-height blur"></div>
+                </v-img>
             </router-link>
 
             <v-card-title primary-title>
@@ -26,10 +29,16 @@
                     <v-btn flat color="orange">Explore</v-btn>
                 </router-link>
                 <v-spacer />
-                <v-btn icon>
+                <v-btn
+                       :class="fav ? 'red--text' : ''"
+                       icon
+                       @click="fav = !fav">
                     <v-icon>favorite</v-icon>
                 </v-btn>
-                <v-btn icon>
+                <v-btn
+                        :class="bookmarked ? 'blue--text' : ''"
+                       icon
+                       @click="bookmarked = !bookmarked">
                     <v-icon>bookmark</v-icon>
                 </v-btn>
                 <v-btn icon>
@@ -55,6 +64,9 @@
     })
     private product!: Product;
 
+    private fav = false;
+    private bookmarked = false;
+
     private get imageSrc(): string {
       return !!this.product.defaultImageUrl ? this.product.defaultImageUrl : failedImageLocation;
     }
@@ -62,5 +74,7 @@
 </script>
 
 <style scoped>
-
+    .blur {
+        background: radial-gradient(ellipse at center, rgba(255,255,255,0) 0%,rgba(255,255,255,0.33) 65%,rgba(185,185,185,0.51) 99%,rgba(183,183,183,0.51) 100%);
+    }
 </style>

@@ -1,16 +1,16 @@
 <template>
   <v-app id="inspire">
       <TheNavbar />
-    <v-content>
-      <v-layout class="pa-5 pr" column justify-center>
+    <v-layout column pt-5>
+      <v-layout class="pa-5 pr noflex" column justify-center>
         <v-divider />
-        <div class="pa-2" style="text-align: center">Shop.com</div>
+        <div class="pa-2 header-name">Shop.com</div>
         <v-divider />
       </v-layout>
-      <v-container fluid fill-height>
+      <v-layout fill-height class="pa-5">
         <router-view></router-view>
-      </v-container>
-    </v-content>
+      </v-layout>
+    </v-layout>
     <TheFooter />
   </v-app>
 </template>
@@ -50,7 +50,17 @@
     }
   }
 
-  .theme--light.application {
-    padding-bottom: 102px;
+  .noflex {
+    flex: none;
+  }
+
+  .header-name {
+    text-align: center;
+  }
+
+  @media (max-width:481px) {
+    .theme--light.application {
+      padding-bottom: 102px;
+    }
   }
 </style>

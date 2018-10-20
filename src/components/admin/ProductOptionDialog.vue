@@ -49,18 +49,21 @@
                                     label="Type"
                                     clearable
                                     v-model="type"
+                                    :rules="[rules.required, rules.length255]"
                             />
                             <v-text-field
                                     prefix="$"
                                     label="Price"
                                     clearable
                                     v-model="price"
+                                    :rules="[rules.number, rules.positive, rules.decimal]"
                             />
                             <v-text-field
                                     type="number"
                                     label="Quantity"
                                     clearable
                                     v-model="quantity"
+                                    :rules="[rules.number, rules.positive]"
                             />
                             <v-btn
                                     color="primary"
@@ -139,7 +142,7 @@
 
                             <v-btn
                                     color="primary"
-                                    @click=""
+                                    @click="save"
                             >
                                 Save
                             </v-btn>
@@ -172,7 +175,7 @@
 </template>
 
 <script lang="ts">
-  import {Component, Vue} from 'vue-property-decorator';
+  import {Component, Emit, Vue} from 'vue-property-decorator';
   import ProductOptionImage from '@/models/ProductOptionImage';
   import ProductSuboption from '@/models/ProductSuboption';
   import LoadingImageWrapper from '@/models/LoadingImageWrapper';
@@ -181,6 +184,8 @@
   import ProductOptionImageListItem from './ProductOptionImageListItem.vue';
   import SubOptionListItem from './SubOptionListItem.vue';
   import ValidationChangeEmit from '../../models/ValidationChangeEmit';
+  import rules from '@/utils/validationRules';
+  import ProductOption from '@/models/ProductOption';
 
   @Component({
     components: {
@@ -201,6 +206,7 @@
     private price = '';
     private quantity = '';
     private uploadedImages: ProductOptionImage[] = [];
+    private rules = rules;
 
     private localImages: LoadingImageWrapper[] = [];
     private suboptions: ProductSuboption[] = [];
@@ -254,6 +260,29 @@
       if (index > -1 && this.suboptions.length > index) {
         this.suboptions.splice(index, 1);
       }
+    }
+
+    private loadingImageWrappersToImages(loadingImages: LoadingImageWrapper[]): ProductOptionImage[] {
+      return loadingImages.map((localImage, index) => {
+        return {
+          location: String(localImage.src),
+          hasThumb: false,
+          order: index,
+        } as ProductOptionImage;
+      });
+    }
+
+    @Emit('save')
+    private save(): ProductOption {
+      const productOption: ProductOption = {
+        type: this.type,
+        price: parseFloat(this.price),
+        quantity: parseInt(this.quantity, 10),
+        suboptions: this.suboptions,
+        images: this.loadingImageWrappersToImages(this.localImages),
+      } as ProductOption;
+      this.editDialog = false;
+      return productOption;
     }
 
     private onFilePicked(event: EventTarget): void {

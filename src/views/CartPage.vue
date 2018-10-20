@@ -1,7 +1,6 @@
 <template>
-    <v-layout
-            row
-            fluid
+    <div
+            class="cartContainer"
     >
         <v-flex class="flex pr-5">
             <div v-if="isFailed">Failed to load cart. :'(</div>
@@ -26,7 +25,7 @@
                 <strong class="total pa-2">Total: {{total | toCurrency}}</strong>
             </v-layout>
         </v-card>
-    </v-layout>
+    </div>
 </template>
 
 <script lang="ts">
@@ -64,6 +63,12 @@
 
 <style lang="scss" scoped>
     $break-small: 320px;
+
+    .cartContainer {
+        flex: 1;
+        display: flex;
+        flex-direction: row;
+    }
 
     .total {
         font-weight: bold;
